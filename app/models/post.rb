@@ -4,7 +4,7 @@ class Post < ApplicationRecord
 	has_many :likes, as: :likeable, dependent: :destroy
 	belongs_to :user
 
-	def liked?(user)
+	def liked?(user) #from google guide Medium?
 		!!self.likes.find{|like| like.user_id == user.id}	
 	end
 		
