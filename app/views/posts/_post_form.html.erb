@@ -1,0 +1,19 @@
+<!-- this is a partial form and will be used or linked to other erb file to render the form, no need to repeatedly type the same codes all over again.
+new.html.erb and edit.html.erb only need to render this in their own page -->
+
+<%= form_with model: @post do |f|%>
+	
+	<br>
+	<%= f.label :caption%>
+	<%= f.text_field :caption%>
+	<br>
+	<%= f.label :photos%>
+	<%= f.file_field :photos, multiple: true%>
+
+		<% if @post.new_record? %>
+			<%= f.submit'Create' %>
+		<% else %>
+			<%= f.submit 'Update'%>
+		<% end %>
+
+<% end %>

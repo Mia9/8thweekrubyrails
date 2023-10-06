@@ -1,0 +1,42 @@
+<h1>Instagram Clone 1.0</h1>
+
+<% if user_signed_in?%>
+	<%= current_user.email%>
+	<%= link_to 'Signed Out', destroy_user_session_path, data: {
+	turbo_method: :delete}%>
+<%else%>
+	<%= link_to 'Sign in', new_user_session_path%>
+	<%= link_to 'Sign Up', new_user_registration_path%>
+<%end%>
+
+
+<% if @posts.any? %>
+	<ul>
+		<% @posts.each do |post|%>
+		<li>
+			<br>
+				<%= link_to post_path(post) do%>
+					<%if post.photos.attached?%>
+						<%= post.caption%><br>
+						<%= image_tag post.photos.first, width: 80, height: 80 %>
+					<%else%>
+						<p>No photo found.</p>
+					<%end%>
+				<%end%>
+		</li>
+		<%end%>
+	</ul>
+	<%else%>
+	<p>No post found.</p>
+	<%end%>
+	<br>
+
+<%= link_to 'Create New Post', new_post_path %>
+<style>
+	body {
+		text-align: center;
+	}
+	ul {
+		list-style-type: none;
+	}
+</style>

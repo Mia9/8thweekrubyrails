@@ -1,0 +1,56 @@
+
+<%= @post.caption%>
+<br>
+
+<%if @post.photos.attached? %>
+		<% @post.photos.each do |photo|%>
+			<%= link_to rails_blob_path(photo, disposition: "attachment") do %>	
+			<%end%>
+		<%= image_tag photo, width: 200, height: 200 %>		
+		<%end%>
+
+			<%= form_for([@post, @comment]) do |f|%>
+			<%= f.text_area :content, placeholder: "Write comments here"%><br>
+			<%= f.submit 'Submit'%>
+			<%end%>
+<%else%>
+		<p>No photo found.</p>
+<%end%>
+<br>
+<!-- show comments part -->
+<% if @post.comments.any?%>
+		<% @post.comments.each do |comment|%>
+		<li><%= comment.content%></li>
+
+		<!-- delete link here -->
+
+		<button>
+		<%= link_to 'Delete Comment', post_comment_path(@post, comment), data: {
+			turbo_method: :delete,
+			turbo_confirm: "Are you sure?"
+		}%></button>
+
+		<%end%>
+	
+<%else%>
+	<p>Be the first to comment.</p>
+<%end%>
+<br><br>
+<!-- links to edit or delete -->
+<br>
+<%= link_to 'Edit', edit_post_path(@post) %>
+<br>
+<%= link_to 'Delete Post', post_path(@post), 
+	data: { turbo_method: :delete,
+	turbo_confirm: "Are you sure?"} %>
+
+<%if user_signed_in?%>
+	<% if current_user.has_liked?(@post) %>
+		<%= button_to "Unlike", like_path(likeable: @post), method: :delete %>
+	<%else%>
+		<%= button_to "Like", likes_path(likeable: @post, likeable_type: "Post")%>
+	<%end%>
+<%end%>
+
+<%= pluralize(@post.likes.count, 'like')%>
+<br><a href="/">Home</a>

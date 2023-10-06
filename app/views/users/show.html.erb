@@ -1,0 +1,8 @@
+<%= @user.email%>
+<%if current_user.is_following?(@user.id)%>
+	<%= button_to 'Unfollow', unfollow_user_path(@user)%>
+<%else%>
+	<%= button_to 'Follow', follow_user_path(@user)%>
+<%end%>
+<br><a href="/">Home</a>
+
